@@ -381,17 +381,7 @@ abstract class AbstractController extends ActionController
         $this->eventDispatcher->dispatch(new FinalCreateEvent($user, $action));
         $this->finisherRunner->callFinishers($user, $this->actionMethodName, $this->settings, $this->contentObject);
 
-        if ($backend === false) {
-            $redirectTarget = $this->redirectByAction(
-                $action,
-                ($status ? $status . 'Redirect' : 'redirect'),
-                $redirectByActionName
-            );
-            if ($redirectTarget instanceof RedirectResponse) {
-                $this->addFlashMessage(LocalizationUtility::translate('create'));
-            }
-            return $redirectTarget;
-        }
+
         return null;
     }
 
