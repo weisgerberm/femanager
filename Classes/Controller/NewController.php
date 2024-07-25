@@ -448,26 +448,26 @@ class NewController extends AbstractFrontendController
 
     /**
      * re-sends a confirmation email if given mail is valid
+     *
+     * @param array $user
+     * @return ResponseInterface
      */
-    public function resendConfirmationMailAction(): ResponseInterface
+    public function resendConfirmationMailAction(array $user): ResponseInterface
     {
-        // @todo find a better way to fetch the data
-        $result = GeneralUtility::_GP('tx_femanager_registration');
-        if (is_array($result)) {
-            $mail = $result['user']['email'] ?? '';
-            if ($mail && GeneralUtility::validEmail($mail)) {
-                $user = $this->userRepository->findFirstByEmail($mail);
-                if (is_a($user, User::class)) {
-                    $this->sendCreateUserConfirmationMail($user);
-                    $this->addFlashMessage(
-                        LocalizationUtility::translate('resendConfirmationMailSend'),
-                        '',
-                        ContextualFeedbackSeverity::INFO
-                    );
-                    return $this->redirect('resendConfirmationDialogue');
-                }
+        $mail = $user['email'] ?? '';
+        if ($mail && GeneralUtility::validEmail($mail)) {
+            $user = $this->userRepository->findFirstByEmail($mail);
+            if (is_a($user, User::class)) {
+                $this->sendCreateUserConfirmationMail($user);
+                $this->addFlashMessage(
+                    LocalizationUtility::translate('resendConfirmationMailSend'),
+                    '',
+                    ContextualFeedbackSeverity::INFO
+                );
+                return $this->redirect('resendConfirmationDialogue');
             }
         }
+
         $this->addFlashMessage(
             LocalizationUtility::translate('resendConfirmationMailFail'),
             LocalizationUtility::translate('validationError'),
