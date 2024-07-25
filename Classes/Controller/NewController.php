@@ -449,7 +449,7 @@ class NewController extends AbstractFrontendController
     /**
      * re-sends a confirmation email if given mail is valid
      */
-    public function resendConfirmationMailAction()
+    public function resendConfirmationMailAction(): ResponseInterface
     {
         // @todo find a better way to fetch the data
         $result = GeneralUtility::_GP('tx_femanager_registration');
@@ -464,7 +464,7 @@ class NewController extends AbstractFrontendController
                         '',
                         ContextualFeedbackSeverity::INFO
                     );
-                    $this->redirect('resendConfirmationDialogue');
+                    return $this->redirect('resendConfirmationDialogue');
                 }
             }
         }
@@ -473,6 +473,6 @@ class NewController extends AbstractFrontendController
             LocalizationUtility::translate('validationError'),
             ContextualFeedbackSeverity::ERROR
         );
-        $this->redirect('resendConfirmationDialogue');
+        return $this->redirect('resendConfirmationDialogue');
     }
 }
