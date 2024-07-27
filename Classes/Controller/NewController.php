@@ -456,8 +456,10 @@ class NewController extends AbstractFrontendController
     {
         $mail = $user['email'] ?? '';
         if ($mail && GeneralUtility::validEmail($mail)) {
+
             $user = $this->userRepository->findFirstByEmail($mail);
             if (is_a($user, User::class)) {
+
                 $this->sendCreateUserConfirmationMail($user);
                 $this->addFlashMessage(
                     LocalizationUtility::translate('resendConfirmationMailSend'),
